@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["✈️", "🚂", "🚀", "🚜", "🚲", "🛺", "🚘", "🛵", "🚚", "🚐", "🚒", "🚌", "🚓", "🏎", "🚁", "🛶", "⛵️", "🚤", "🛥", "🛳", "🛩", "🛸", "🎡", "🎠"]
-    @State var emojiCount = 24
+    var vehiclesEmojis = ["✈️", "🚂", "🚀", "🚜", "🚲", "🛺", "🚘", "🛵", "🚚", "🚐", "🚒", "🚌", "🚓", "🏎", "🚁", "🛶", "⛵️", "🚤", "🛥", "🛳", "🛩", "🛸", "🎡", "🎠"]
+    var animalsEmojis = ["🐶", "🐱", "🐭", "🐰", "🐹", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🐍", "🐙", "🦇", "🐝"]
+    var foodsEmojis = ["🍏", "🍎", "🍐", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🫐", "🍈", "🍒", "🍑", "🥭", "🥦", "🍆", "🥑", "🥥", "🥩", "🍔", "🍟", "🍕", "🍖", "🍗", "🥙", "🌭"]
+    
+    let minimalCardsCount = 8
+    @State var cardCount = 0
+    @State var emojis: [String] = []
     
     var body: some View {
         VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
+            
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+                LazyVGrid(columns: [
+                        GridItem(.adaptive(minimum: 65))
+                    ]) {
+                    ForEach(emojis[0..<cardCount], id: \.self) { emoji in
                         CardView(content: emoji)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -27,34 +37,76 @@ struct ContentView: View {
             Spacer()
             
             HStack {
-                removeButton
-                Spacer()
-                addButton
+                Button(action: {
+                    emojis = vehiclesEmojis.shuffled()
+                    cardCount = Int.random(in: minimalCardsCount..<emojis.count)
+                }, label: {
+                    VStack {
+                        Image(systemName: "car.2.fill")
+                            .font(.largeTitle)
+                        
+                        Text("Vehicles")
+                            .font(.caption)
+                    }
+                })
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    emojis = animalsEmojis.shuffled()
+                    cardCount = Int.random(in: minimalCardsCount..<emojis.count)
+                }, label: {
+                    VStack {
+                        Image(systemName: "hare.fill")
+                            .font(.largeTitle)
+                        
+                        Text("Animals")
+                            .font(.caption)
+                    }
+                })
+                    .padding(.horizontal)
+                
+                Button(action: {
+                    emojis = foodsEmojis.shuffled()
+                    cardCount = Int.random(in: minimalCardsCount..<emojis.count)
+                }, label: {
+                    VStack {
+                        Image(systemName: "leaf.fill")
+                            .font(.largeTitle)
+                        
+                        Text("Foods")
+                            .font(.caption)
+                    }
+                })
+                    .padding(.horizontal)
             }
-            .font(.largeTitle)
-            .padding(.horizontal)
         }
     }
     
-    var removeButton: some View {
-        Button(action: {
-            if emojiCount > 1 {
-                emojiCount -= 1
-            }
-        }, label: {
-            Image(systemName: "minus.circle")
-        })
-    }
-    
-    var addButton: some View {
-        Button(action: {
-            if emojiCount < emojis.count {
-                emojiCount += 1
-            }
-        }, label: {
-            Image(systemName: "plus.circle")
-        })
-    }
+//
+//    struct ThemeChoserButton: View {
+//        var title: String
+//        var icon: String
+//
+//        var body: some View {
+//            Button(action: {
+//
+//            }, label: {
+//                VStack {
+//                    Image(systemName: icon)
+//                        .font(.largeTitle)
+//
+//                    Text(title)
+//                        .font(.caption)
+//                }
+//            })
+//                .padding(.horizontal)
+//
+//        }
+//    }
+}
+
+func widthThatBestFits(cardCount: Int) -> CGFloat {
+    return 65
 }
 
 struct CardView: View {
