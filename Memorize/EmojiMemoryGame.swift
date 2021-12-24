@@ -5,6 +5,8 @@
 //  Created by Bernardo Rodrigues on 07/11/21.
 //
 
+// VIEW MODEL
+
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {

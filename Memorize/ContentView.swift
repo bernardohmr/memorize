@@ -5,6 +5,8 @@
 //  Created by Bernardo Rodrigues on 09/10/21.
 //
 
+// VIEW
+
 import SwiftUI
 
 struct ContentView: View {
@@ -43,6 +45,8 @@ struct CardView: View {
                 
                 Text(card.content)
                     .font(.largeTitle)
+            } else if card.isMatched {
+                shape.opacity(0)
             } else {
                 shape
                     .fill()
